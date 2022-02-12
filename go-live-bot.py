@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import discord
+from discord.ext.commands import Bot
 import sys
 import os
 
@@ -9,12 +10,12 @@ if os.environ.get('GOLIVE_BOT_TOKEN'):
 else:
     sys.exit("please set GOLIVE_BOT_TOKEN env var to your bot token")
 
-owner_list = []
+owner_list = [874820536696451092]
 
 # intents = discord.Intents.default()
 # intents.members = True
 # bot = commands.Bot(intents=intents)
-bot = discord.Bot()
+bot = Bot(command_prefix="!")
 
 
 @bot.event
@@ -40,7 +41,7 @@ async def on_ready():
     print(f"------")
 
 
-@bot.slash_command()
+@bot.command()
 async def leave(ctx):
     if not int(ctx.author.id) in owner_list:
         return
@@ -52,7 +53,7 @@ async def leave(ctx):
         print("channel left")
 
 
-@bot.slash_command()
+@bot.command()
 async def join(ctx, channel_id=None):
     if not int(ctx.author.id) in owner_list:
         return
@@ -96,7 +97,8 @@ async def join(ctx, channel_id=None):
                     print("Using this bot through DMs without specifying a channel ID, "
                           "requires you enable SERVER MEMBERS INTENT over at "
                           f" https://discord.com/developers/applications/{bot.user.id}/bot")
-                    print("then you need to edit this script, uncomment line 22 and comment 23.")
+                    print(
+                        "then you need to edit this script, uncomment line 22 and comment 23.")
                     print("if you are seeing this message, you haven't did that")
                     return
             elif ctx.voice_client.is_playing():
@@ -116,11 +118,11 @@ async def join(ctx, channel_id=None):
 
             audio_source = discord.FFmpegOpusAudio(
                 "default",
-                bitrate=48,
+                bitrate=480000,
                 before_options="-f pulse",
                 options="-application lowdelay"
             )
-            
+
             voice_client.play(audio_source)
             await ctx.respond(f"joined {target_channel.mention}")
 
