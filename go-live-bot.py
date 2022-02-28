@@ -118,7 +118,7 @@ async def join(ctx, channel_id=None):
 
             audio_source = discord.FFmpegOpusAudio(
                 "default",
-                bitrate=512000,
+                bitrate=48,
                 before_options="-f pulse",
                 options="-application lowdelay"
             )
